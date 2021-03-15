@@ -1,0 +1,17 @@
+resume:
+save_dir: models/
+log_dir: ${name}/
+
+metrics:
+  - _target_: srcs.model.metric.accuracy
+  - _target_: srcs.model.metric.top_k_acc
+
+defaults:
+  - data: mnist_train
+  - model: mnist_lenet
+  - hparams: lenet_baseline
+
+  - status: train
+
+  - hydra/job_logging : custom
+  - hydra/run/dir: job_timestamp
