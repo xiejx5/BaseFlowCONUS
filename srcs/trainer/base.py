@@ -105,7 +105,6 @@ class BaseTrainer(metaclass=ABCMeta):
             self.logger.info('='*max_line_width)
             dist.barrier()
 
-
     def _save_checkpoint(self, epoch, save_best=False, save_latest=True):
         """
         Saving checkpoints
