@@ -102,8 +102,10 @@ ENV/
 
 # input data, saved log, checkpoints
 data/
+logs/
 input/
 saved/
+models/
 datasets/
 
 # editor, os cache directory

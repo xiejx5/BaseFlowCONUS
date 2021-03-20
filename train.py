@@ -4,8 +4,8 @@ import torch
 import torch.distributed as dist
 from omegaconf import OmegaConf
 from pathlib import Path
-from srcs.trainer import Trainer
-from srcs.utils import instantiate, get_logger
+from src.trainer import Trainer
+from src.utils import instantiate, get_logger
 
 
 # fix random seeds for reproducibility
@@ -25,7 +25,8 @@ def train_worker(config):
     model = instantiate(config.arch)
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())
     logger.info(model)
-    logger.info(f'Trainable parameters: {sum([p.numel() for p in trainable_params])}')
+    logger.info(
+        f'Trainable parameters: {sum([p.numel() for p in trainable_params])}')
 
     # get function handles of loss and metrics
     criterion = instantiate(config.loss, is_func=True)
@@ -41,6 +42,7 @@ def train_worker(config):
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler)
     trainer.train()
+
 
 def init_worker(rank, ngpus, working_dir, config):
     # initialize training config
@@ -60,6 +62,7 @@ def init_worker(rank, ngpus, working_dir, config):
     # start training processes
     train_worker(config)
 
+
 @hydra.main(config_path='conf/', config_name='train')
 def main(config):
     n_gpu = torch.cuda.device_count()
@@ -70,8 +73,15 @@ def main(config):
     if config.resume is not None:
         config.resume = hydra.utils.to_absolute_path(config.resume)
     config = OmegaConf.to_yaml(config, resolve=True)
-    torch.multiprocessing.spawn(init_worker, nprocs=n_gpu, args=(n_gpu, working_dir, config))
+    torch.multiprocessing.spawn(
+        init_worker, nprocs=n_gpu, args=(n_gpu, working_dir, config))
+
 
 if __name__ == '__main__':
     # pylint: disable=no-value-for-parameter
+    import os
+    from hydra.experimental import compose, initialize_config_dir
+    initialize_config_dir(config_dir=os.path.join(os.getcwd(), 'conf'), job_name='test_app')
+    config = compose(config_name="config")
+    print(OmegaConf.to_yaml(config))
     main()

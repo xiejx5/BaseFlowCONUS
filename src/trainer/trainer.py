@@ -2,8 +2,8 @@ import torch
 import torch.distributed as dist
 from torchvision.utils import make_grid
 from .base import BaseTrainer
-from srcs.utils import inf_loop, collect
-from srcs.logger import BatchMetrics
+from src.utils import inf_loop, collect
+from src.logger import BatchMetrics
 
 
 class Trainer(BaseTrainer):

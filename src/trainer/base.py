@@ -7,8 +7,8 @@ from pathlib import Path
 from shutil import copyfile
 from numpy import inf
 
-from srcs.utils import write_conf, is_master, get_logger
-from srcs.logger import TensorboardWriter, EpochMetrics
+from src.utils import write_conf, is_master, get_logger
+from src.logger import TensorboardWriter, EpochMetrics
 
 
 class BaseTrainer(metaclass=ABCMeta):

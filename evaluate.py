@@ -3,7 +3,7 @@ import torch
 import hydra
 from omegaconf import OmegaConf
 from tqdm import tqdm
-from srcs.utils import instantiate
+from src.utils import instantiate
 
 
 logger = logging.getLogger('evaluate')

@@ -3,7 +3,7 @@ import pandas as pd
 from itertools import product
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
-from srcs.utils import get_logger
+from src.utils import get_logger
 
 
 class TensorboardWriter():

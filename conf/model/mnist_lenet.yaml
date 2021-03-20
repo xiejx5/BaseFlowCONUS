@@ -1,10 +1,10 @@
 # @package _global_
 name: MnistLeNet
 arch:
-  _target_: srcs.model.model.MnistModel
+  _target_: src.model.model.MnistModel
   num_classes: 10
 loss:
-  _target_: srcs.model.loss.nll_loss
+  _target_: src.model.loss.nll_loss
 optimizer:
   _target_: torch.optim.Adam
   lr: ${learning_rate}
