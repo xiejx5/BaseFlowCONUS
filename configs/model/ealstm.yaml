@@ -1,0 +1,4 @@
+_target_: source.models.mnist_model.LitModelMNIST
+
+defaults:
+  - base

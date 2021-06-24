@@ -1,0 +1,13 @@
+# specify here default training configuration
+optimizer:
+  _target_: torch.optim.Adam
+  # these are default parameters for Adam
+  lr: 0.001
+  eps: 1e-08
+  weight_decay: 0
+
+criterion:
+  _target_: source.model.loss.nll_loss
+
+metrics:
+  - _target_: source.model.metric.accuracy

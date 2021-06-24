@@ -1,22 +1,21 @@
 import logging
 import torch
-import hydra
 from omegaconf import OmegaConf
 from tqdm import tqdm
-from src.utils import instantiate
+from hydra.utils import instantiate
 
 
 logger = logging.getLogger('evaluate')
 
-@hydra.main(config_path='conf', config_name='evaluate')
-def main(config):
-    logger.info('Loading checkpoint: {} ...'.format(config.checkpoint))
-    checkpoint = torch.load(config.checkpoint)
+
+def evaluate(cfg):
+    logger.info('Loading checkpoint: {} ...'.format(cfg.checkpoint))
+    checkpoint = torch.load(cfg.checkpoint)
 
     loaded_config = OmegaConf.create(checkpoint['config'])
 
     # setup data_loader instances
-    data_loader = instantiate(config.data_loader)
+    data_loader = instantiate(cfg.data_loader)
 
     # restore network architecture
     model = instantiate(loaded_config.arch)
@@ -62,8 +61,3 @@ def main(config):
         met.__name__: total_metrics[i].item() / n_samples for i, met in enumerate(metrics)
     })
     logger.info(log)
-
-
-if __name__ == '__main__':
-    # pylint: disable=no-value-for-parameter
-    main()

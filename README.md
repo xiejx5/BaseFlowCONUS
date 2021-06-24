@@ -60,7 +60,7 @@ The directory structure of the project looks like this:
 │
 ├── tests                   <- Tests of any kind
 │
-├── src
+├── source
 │   ├── architectures           <- PyTorch model architectures
 │   ├── callbacks               <- PyTorch Lightning callbacks
 │   ├── datamodules             <- PyTorch Lightning datamodules

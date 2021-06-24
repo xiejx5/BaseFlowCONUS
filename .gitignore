@@ -105,8 +105,9 @@ data/
 logs/
 input/
 saved/
-models/
-datasets/
+outdate/
+cache/
+fig*.py
 
 # editor, os cache directory
 .vscode/

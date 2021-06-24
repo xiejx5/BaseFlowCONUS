@@ -1,6 +1,0 @@
-_target_: src.data_loader.data_loaders.get_data_loaders
-data_dir: ${hydra.runtime.cwd}/data/
-batch_size: ${batch_size}
-shuffle: true
-validation_split: 0.1
-num_workers: ${n_cpu}

@@ -1,43 +1,44 @@
-import numpy as np
 import hydra
 import torch
+import logging
 import torch.distributed as dist
+import numpy as np
 from omegaconf import OmegaConf
 from pathlib import Path
-from src.trainer import Trainer
-from src.utils import instantiate, get_logger
+from source.trainer import Trainer
+from hydra.utils import instantiate
+# from source.utils.util import instantiate
+
+import os
+from hydra.experimental import compose, initialize_config_dir
+initialize_config_dir(config_dir=os.path.join(
+    os.getcwd(), "configs"), job_name="test_app")
+cfg = compose(config_name="config", overrides=["work_dir=."])
 
 
-# fix random seeds for reproducibility
-SEED = 123
-torch.manual_seed(SEED)
-torch.backends.cudnn.deterministic = True
-torch.backends.cudnn.benchmark = False
-np.random.seed(SEED)
-
-
-def train_worker(config):
-    logger = get_logger('train')
+def train_worker(cfg):
+    logger = logging.getLogger('trainer')
     # setup data_loader instances
-    data_loader, valid_data_loader = instantiate(config.data_loader)
+    data_loader, valid_loader = instantiate(cfg.dataloader)
+    train_loader, valid_data_loader = instantiate(cfg.dataloader)
 
     # build model. print it's structure and # trainable params.
-    model = instantiate(config.arch)
+    model = instantiate(cfg.arch)
     trainable_params = filter(lambda p: p.requires_grad, model.parameters())
     logger.info(model)
     logger.info(
         f'Trainable parameters: {sum([p.numel() for p in trainable_params])}')
 
     # get function handles of loss and metrics
-    criterion = instantiate(config.loss, is_func=True)
-    metrics = [instantiate(met, is_func=True) for met in config['metrics']]
+    criterion = instantiate(cfg.loss, is_func=True)
+    metrics = [instantiate(met, is_func=True) for met in cfg['metrics']]
 
     # build optimizer, learning rate scheduler.
-    optimizer = instantiate(config.optimizer, model.parameters())
-    lr_scheduler = instantiate(config.lr_scheduler, optimizer)
+    optimizer = instantiate(cfg.optimizer, model.parameters())
+    lr_scheduler = instantiate(cfg.lr_scheduler, optimizer)
 
     trainer = Trainer(model, criterion, metrics, optimizer,
-                      config=config,
+                      config=cfg,
                       data_loader=data_loader,
                       valid_data_loader=valid_data_loader,
                       lr_scheduler=lr_scheduler)
@@ -63,25 +64,14 @@ def init_worker(rank, ngpus, working_dir, config):
     train_worker(config)
 
 
-@hydra.main(config_path='conf/', config_name='train')
-def main(config):
+def train(cfg):
     n_gpu = torch.cuda.device_count()
     assert n_gpu, 'Can\'t find any GPU device on this machine.'
 
     working_dir = str(Path.cwd().relative_to(hydra.utils.get_original_cwd()))
 
-    if config.resume is not None:
-        config.resume = hydra.utils.to_absolute_path(config.resume)
-    config = OmegaConf.to_yaml(config, resolve=True)
+    if cfg.resume is not None:
+        cfg.resume = hydra.utils.to_absolute_path(cfg.resume)
+    cfg = OmegaConf.to_yaml(cfg, resolve=True)
     torch.multiprocessing.spawn(
-        init_worker, nprocs=n_gpu, args=(n_gpu, working_dir, config))
-
-
-if __name__ == '__main__':
-    # pylint: disable=no-value-for-parameter
-    import os
-    from hydra.experimental import compose, initialize_config_dir
-    initialize_config_dir(config_dir=os.path.join(os.getcwd(), 'conf'), job_name='test_app')
-    config = compose(config_name="config")
-    print(OmegaConf.to_yaml(config))
-    main()
+        init_worker, nprocs=n_gpu, args=(n_gpu, working_dir, cfg))

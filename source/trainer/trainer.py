@@ -2,14 +2,15 @@ import torch
 import torch.distributed as dist
 from torchvision.utils import make_grid
 from .base import BaseTrainer
-from src.utils import inf_loop, collect
-from src.logger import BatchMetrics
+from source.utils.util import inf_loop, collect
+from source.utils.logger import BatchMetrics
 
 
 class Trainer(BaseTrainer):
     """
     Trainer class
     """
+
     def __init__(self, model, criterion, metric_ftns, optimizer, config, data_loader,
                  valid_data_loader=None, lr_scheduler=None, len_epoch=None):
         super().__init__(model, criterion, metric_ftns, optimizer, config)
@@ -25,8 +26,10 @@ class Trainer(BaseTrainer):
         self.valid_data_loader = valid_data_loader
         self.lr_scheduler = lr_scheduler
 
-        self.train_metrics = BatchMetrics('loss', *[m.__name__ for m in self.metric_ftns], postfix='/train', writer=self.writer)
-        self.valid_metrics = BatchMetrics('loss', *[m.__name__ for m in self.metric_ftns], postfix='/valid', writer=self.writer)
+        self.train_metrics = BatchMetrics(
+            'loss', *[m.__name__ for m in self.metric_ftns], postfix='/train', writer=self.writer)
+        self.valid_metrics = BatchMetrics(
+            'loss', *[m.__name__ for m in self.metric_ftns], postfix='/valid', writer=self.writer)
 
     def _train_epoch(self, epoch):
         """
@@ -50,11 +53,14 @@ class Trainer(BaseTrainer):
             self.train_metrics.update('loss', collect(loss))
 
             if batch_idx % self.log_step == 0:
-                self.writer.add_image('train/input', make_grid(data.cpu(), nrow=8, normalize=True))
+                self.writer.add_image(
+                    'train/input', make_grid(data.cpu(), nrow=8, normalize=True))
                 for met in self.metric_ftns:
-                    metric = collect(met(output, target)) # average metric between processes
+                    # average metric between processes
+                    metric = collect(met(output, target))
                     self.train_metrics.update(met.__name__, metric)
-                self.logger.info(f'Train Epoch: {epoch} {self._progress(batch_idx)} Loss: {loss.item():.6f}')
+                self.logger.info(
+                    f'Train Epoch: {epoch} {self._progress(batch_idx)} Loss: {loss.item():.6f}')
 
             if batch_idx == self.len_epoch:
                 break
@@ -89,11 +95,14 @@ class Trainer(BaseTrainer):
                 output = self.model(data)
                 loss = self.criterion(output, target)
 
-                self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx)
-                self.writer.add_image('valid/input', make_grid(data.cpu(), nrow=8, normalize=True))
+                self.writer.set_step(
+                    (epoch - 1) * len(self.valid_data_loader) + batch_idx)
+                self.writer.add_image(
+                    'valid/input', make_grid(data.cpu(), nrow=8, normalize=True))
                 self.valid_metrics.update('loss', loss.item())
                 for met in self.metric_ftns:
-                    self.valid_metrics.update(met.__name__, met(output, target))
+                    self.valid_metrics.update(
+                        met.__name__, met(output, target))
 
         # add histogram of model parameters to the tensorboard
         for name, p in self.model.named_parameters():

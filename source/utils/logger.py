@@ -1,14 +1,14 @@
 import os
+import logging
 import pandas as pd
 from itertools import product
 from torch.utils.tensorboard import SummaryWriter
 from datetime import datetime
-from src.utils import get_logger
 
 
 class TensorboardWriter():
     def __init__(self, log_dir, enabled):
-        self.logger = get_logger('tensorboard-writer')
+        self.logger = logging.getLogger('tensorboard-writer')
         self.writer = SummaryWriter(log_dir) if enabled else None
         self.selected_module = ""
 
@@ -50,13 +50,15 @@ class TensorboardWriter():
             attr = getattr(self.writer, name)
             return attr
 
+
 class BatchMetrics:
     def __init__(self, *keys, postfix='', writer=None):
         self.writer = writer
         self.postfix = postfix
         if postfix:
-            keys = [k+postfix for k in keys]
-        self._data = pd.DataFrame(index=keys, columns=['total', 'counts', 'average'])
+            keys = [k + postfix for k in keys]
+        self._data = pd.DataFrame(
+            index=keys, columns=['total', 'counts', 'average'])
         self.reset()
 
     def reset(self):
@@ -70,7 +72,8 @@ class BatchMetrics:
             self.writer.add_scalar(key, value)
         self._data.total[key] += value * n
         self._data.counts[key] += n
-        self._data.average[key] = self._data.total[key] / self._data.counts[key]
+        self._data.average[key] = self._data.total[key] / \
+            self._data.counts[key]
 
     def avg(self, key):
         if self.postfix:
@@ -80,13 +83,15 @@ class BatchMetrics:
     def result(self):
         return dict(self._data.average)
 
+
 class EpochMetrics:
     def __init__(self, metric_names, phases=('train', 'valid'), monitoring='off'):
         self.logger = get_logger('epoch-metrics')
         # setup pandas DataFrame with hierarchical columns
         columns = tuple(product(metric_names, phases))
-        self._data = pd.DataFrame(columns=columns) # TODO: add epoch duration
-        self.monitor_mode, self.monitor_metric = self._parse_monitoring_mode(monitoring)
+        self._data = pd.DataFrame(columns=columns)  # TODO: add epoch duration
+        self.monitor_mode, self.monitor_metric = self._parse_monitoring_mode(
+            monitoring)
         self.topk_idx = []
 
     def minimizing_metric(self, idx):
@@ -127,14 +132,15 @@ class EpochMetrics:
         """
         if len(self.topk_idx) > k and self.monitor_mode != 'off':
             last_epoch = self._data.index[-1]
-            self.topk_idx = self.topk_idx[:(k+1)]
+            self.topk_idx = self.topk_idx[:(k + 1)]
             if last_epoch not in self.topk_idx:
                 to_delete = last_epoch
             else:
                 to_delete = self.topk_idx[-1]
 
             # delete checkpoint having out-of topk metric
-            filename = str(checkpt_dir / 'checkpoint-epoch{}.pth'.format(to_delete.split('-')[1]))
+            filename = str(
+                checkpt_dir / 'checkpoint-epoch{}.pth'.format(to_delete.split('-')[1]))
             try:
                 os.remove(filename)
             except FileNotFoundError:
@@ -144,7 +150,8 @@ class EpochMetrics:
 
     def update(self, epoch, result):
         epoch_idx = f'epoch-{epoch}'
-        self._data.loc[epoch_idx] = {tuple(k.split('/')):v for k, v in result.items()}
+        self._data.loc[epoch_idx] = {
+            tuple(k.split('/')): v for k, v in result.items()}
 
         self.topk_idx.append(epoch_idx)
         self.topk_idx = sorted(self.topk_idx, key=self.minimizing_metric)

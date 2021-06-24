@@ -1,4 +1,5 @@
 import os
+import logging
 import signal
 import torch
 import torch.distributed as dist
@@ -7,17 +8,18 @@ from pathlib import Path
 from shutil import copyfile
 from numpy import inf
 
-from src.utils import write_conf, is_master, get_logger
-from src.logger import TensorboardWriter, EpochMetrics
+from source.utils.util import write_conf
+from source.utils.logger import TensorboardWriter, EpochMetrics
 
 
 class BaseTrainer(metaclass=ABCMeta):
     """
     Base class for all trainers
     """
+
     def __init__(self, model, criterion, metric_ftns, optimizer, config):
         self.config = config
-        self.logger = get_logger('trainer')
+        self.logger = logging.getLogger('trainer')
 
         self.device = config.local_rank
         self.model = model.to(self.device)
@@ -34,7 +36,8 @@ class BaseTrainer(metaclass=ABCMeta):
         self.monitor = cfg_trainer.get('monitor', 'off')
 
         metric_names = ['loss'] + [met.__name__ for met in self.metric_ftns]
-        self.ep_metrics = EpochMetrics(metric_names, phases=('train', 'valid'), monitoring=self.monitor)
+        self.ep_metrics = EpochMetrics(metric_names, phases=(
+            'train', 'valid'), monitoring=self.monitor)
 
         self.checkpt_top_k = cfg_trainer.get('save_topk', -1)
         self.early_stop = cfg_trainer.get('early_stop', inf)
@@ -48,7 +51,8 @@ class BaseTrainer(metaclass=ABCMeta):
             self.checkpt_dir.mkdir()
             # setup visualization writer instance
             log_dir.mkdir()
-            self.writer = TensorboardWriter(log_dir, cfg_trainer['tensorboard'])
+            self.writer = TensorboardWriter(
+                log_dir, cfg_trainer['tensorboard'])
         else:
             self.writer = TensorboardWriter(log_dir, False)
 
@@ -74,9 +78,10 @@ class BaseTrainer(metaclass=ABCMeta):
             self.ep_metrics.update(epoch, result)
 
             # print result metrics of this epoch
-            max_line_width = max(len(line) for line in str(self.ep_metrics).splitlines())
+            max_line_width = max(len(line)
+                                 for line in str(self.ep_metrics).splitlines())
             # divider ---
-            self.logger.info('-'*max_line_width)
+            self.logger.info('-' * max_line_width)
             self.logger.info(str(self.ep_metrics.latest()) + '\n')
 
             # check if model performance improved or not, for early stopping and topk saving
@@ -88,21 +93,23 @@ class BaseTrainer(metaclass=ABCMeta):
             else:
                 not_improved_count += 1
 
-            if not_improved_count > self.early_stop and is_master():
+            if not_improved_count > self.early_stop:
                 self.logger.info("Validation performance didn\'t improve for {} epochs. "
                                  "Training stops.".format(self.early_stop))
                 os.kill(os.getppid(), signal.SIGTERM)
 
             using_topk_save = self.checkpt_top_k > 0
-            self._save_checkpoint(epoch, save_best=is_best, save_latest=using_topk_save)
+            self._save_checkpoint(epoch, save_best=is_best,
+                                  save_latest=using_topk_save)
             # keep top-k checkpoints only, using monitoring metrics
             if using_topk_save:
-                self.ep_metrics.keep_topk_checkpt(self.checkpt_dir, self.checkpt_top_k)
+                self.ep_metrics.keep_topk_checkpt(
+                    self.checkpt_dir, self.checkpt_top_k)
 
             self.ep_metrics.to_csv('epoch-results.csv')
 
             # divider ===
-            self.logger.info('='*max_line_width)
+            self.logger.info('=' * max_line_width)
             dist.barrier()
 
     def _save_checkpoint(self, epoch, save_best=False, save_latest=True):
@@ -126,14 +133,16 @@ class BaseTrainer(metaclass=ABCMeta):
 
         filename = str(self.checkpt_dir / f'checkpoint-epoch{epoch}.pth')
         torch.save(state, filename)
-        self.logger.info(f"Model checkpoint saved at: \n    {self.config.cwd}/{filename}")
+        self.logger.info(
+            f"Model checkpoint saved at: \n    {self.config.cwd}/{filename}")
         if save_latest:
             latest_path = str(self.checkpt_dir / 'model_latest.pth')
             copyfile(filename, latest_path)
         if save_best:
             best_path = str(self.checkpt_dir / 'model_best.pth')
             copyfile(filename, best_path)
-            self.logger.info(f"Renewing best checkpoint: \n    .../{best_path}")
+            self.logger.info(
+                f"Renewing best checkpoint: \n    .../{best_path}")
 
     def _resume_checkpoint(self, resume_path):
         """
@@ -162,4 +171,5 @@ class BaseTrainer(metaclass=ABCMeta):
         else:
             self.optimizer.load_state_dict(checkpoint['optimizer'])
 
-        self.logger.info(f"Checkpoint loaded. Resume training from epoch {self.start_epoch}")
+        self.logger.info(
+            f"Checkpoint loaded. Resume training from epoch {self.start_epoch}")

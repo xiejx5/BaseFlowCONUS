@@ -1,0 +1,27 @@
+# @package _global_
+
+# directories and files
+raw:
+  dyn: ${data_dir}/raw/dynamic
+  sta: ${data_dir}/raw/static
+tif:
+  dyn: ${data_dir}/tif/dynamic
+  sta: ${data_dir}/tif/static
+csv:
+  dyn: ${data_dir}/csv/dynamic
+  sta: ${data_dir}/csv/static_features.csv
+  flow:
+    daily: ${data_dir}/csv/baseflow_daily
+    monthly: ${data_dir}/csv/baseflow_monthly
+shp:
+  usa: ${data_dir}/shp/usa/usa_wgs84.shp
+  basins: ${data_dir}/shp/basins/1653-na.shp
+  perm: ${data_dir}/shp/perm/permeability.shp
+gages: ${data_dir}/Gages.xlsx
+gages_origin: ${data_dir}/Gages_Origin.xlsx
+
+# Google Earth Engine parameters
+gee:
+  username: xiejx5
+  basins: 1653-na
+  usa: CONUS
