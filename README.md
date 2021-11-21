@@ -35,7 +35,6 @@ Based on Front LSTM, the monthly baseflow dataset with 0.25° spatial resolution
 
 ## ⚡&nbsp;&nbsp;Project Structure
 ```yaml
-baseflow/
 ├── configs                 <- Hydra configuration files
 │   ├── constant                <- Folder paths and constants
 │   ├── dataset                 <- Configs of Pytorch dataset
