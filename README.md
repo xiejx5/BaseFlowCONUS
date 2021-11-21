@@ -13,6 +13,7 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
 
 </div>
 <br>
+
 - [Introduction](#introduction)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
@@ -78,22 +79,29 @@ baseflow/
 ## ℹ️&nbsp;&nbsp;Usage
 
 ### Data Preparation
-First, download watershed.zip from the [release page](https://github.com/xiejx5/watershed_delineation/releases)
-Next, unzip and open watershed.exe, clip start to execute an example
+```bash
+from src import prepare
+
+# download data from ERA5 and Google Earth Engine
+prepare(cfg['constant'])
+```
 <br>
 
 ### Hyperparameter Tuning
 ```bash
+# detailed settings are in optuna.yaml
 python run.py -m tuner=optuna
 ```
 <br>
 
 ### Train and Evaluate
 ```bash
+# evaluate Front LSTM using test_size=0.2
 python run.py -m model=front dataset.eco=CPL, NAP, NPL
 ```
 
 ```bash
+# train Front LSTM using test_size=0
 python run.py -m model=front datasplit=full dataset.eco=CPL, NAP, NPL
 ```
 <br>
@@ -102,6 +110,7 @@ python run.py -m model=front datasplit=full dataset.eco=CPL, NAP, NPL
 ```bash
 from src import simulate
 
+# load the trained model for each ecoregion
 checkpoint = 'saved/train/front/CPL/models/model_latest.pth'
 simulate(checkpoint)
 ```
