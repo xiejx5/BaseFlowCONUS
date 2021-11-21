@@ -85,14 +85,12 @@ from src import prepare
 # download data from ERA5 and Google Earth Engine
 prepare(cfg['constant'])
 ```
-<br>
 
 ### Hyperparameter Tuning
 ```bash
 # detailed settings are in optuna.yaml
 python run.py -m tuner=optuna
 ```
-<br>
 
 ### Train and Evaluate
 ```bash
@@ -104,7 +102,6 @@ python run.py -m model=front dataset.eco=CPL, NAP, NPL
 # train Front LSTM using test_size=0
 python run.py -m model=front datasplit=full dataset.eco=CPL, NAP, NPL
 ```
-<br>
 
 ### Baseflow Simulation
 ```bash
