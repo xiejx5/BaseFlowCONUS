@@ -17,7 +17,7 @@
 - [Guide](#guide)
     - [Prepare Data](#prepare-data)
     - [Hyperparameter Tuning](#hyperparameter-tuning)
-    - [Train and Evaluate](#train-evaluate)
+    - [Train and Evaluate](#train-and-evaluate)
     - [Simulate Baseflow](#simulate-baseflow)
 - [Citation](#citation)
 <br>
@@ -25,6 +25,7 @@
 
 ## 📌&nbsp;&nbsp;Introduction
 We estimated the 0.25° monthly gridded baseflow across the contiguous US from 1980 to 2018 using a machine learning approach called the long short-term memory (LSTM) network.
+<br>
 <br>
 
 ## ⚡&nbsp;&nbsp;Project Structure
