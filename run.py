@@ -13,12 +13,12 @@ def main(cfg):
     dataset = instantiate(cfg.dataset)
     # setup data_loader instances
     datasplit = instantiate(cfg.datasplit, dataset)
-    # set a consistent stratify split if training on all ecological regions
+    # set a consistent stratify split if training on all ecoregions
     consistent_split(cfg, dataset, datasplit)
 
     n, accumulation = 0, 0
     for train_loader, test_loader in datasplit:
-        # build model. print it's structure and # trainable params.
+        # build model and print its architecture
         model = instantiate(cfg.model)
         trainable_params = filter(lambda p: p.requires_grad, model.parameters())
         logger.info(model)
@@ -28,7 +28,7 @@ def main(cfg):
         criterion = instantiate(cfg.loss, dataset)
         metrics = [instantiate(met) for met in cfg.trainer['metrics']]
 
-        # build optimizer, learning rate scheduler.
+        # build optimizer and learning rate scheduler
         optimizer = instantiate(cfg.optimizer, model.parameters())
         lr_scheduler = instantiate(cfg.trainer.lr_scheduler, optimizer)
 
