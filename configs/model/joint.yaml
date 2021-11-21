@@ -1,0 +1,8 @@
+_target_: src.models.joint.JointLSTM
+
+defaults:
+  - public_arch
+  - _self_
+
+# Number of static features
+input_size_sta: 16

@@ -1,0 +1,30 @@
+# @package _global_
+defaults:
+- model: front
+- dataset: with_static
+- datasplit: train_test
+- loss: RMSLELoss
+- optimizer: adam
+- trainer: default
+- hydra: default
+- tuner: null
+- constant/folder
+- constant/variable
+- constant/gdal
+- _self_
+work_dir: ${hydra:runtime.cwd}
+data_dir: ${work_dir}/data
+save_dir: models/
+log_dir: ./
+checkpoint: null
+resume: null
+n_gpu: 1
+
+# hyperparameter tuning
+optimizer:
+  lr: 0.0001
+model:
+  hidden_size: 256
+  drop_prob: 0.4
+dataset:
+  seq_length: 18

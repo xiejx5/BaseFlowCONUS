@@ -1,0 +1,8 @@
+# @package constant
+
+# gdal option
+gdal:
+  creation:
+    ["TILED=YES", "COMPRESS=DEFLATE", "ZLEVEL=3", "PREDICTOR=1", "BIGTIFF=YES"]
+  config: ["GDAL_CACHE_MAX=128"]
+  nodata: -9.223372e+18

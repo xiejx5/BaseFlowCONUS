@@ -1,0 +1,10 @@
+_target_: src.datasets.dynamic.Dynamic
+gages_dir: ${constant.gages}
+X_dir: ${constant.csv.dyn}
+y_dir: ${constant.csv.flow.monthly}
+beg_year: ${constant.beg.year}
+beg_month: ${constant.beg.month}
+seq_length: 12
+input_size_dyn: ${model.input_size_dyn}
+output_size: ${model.output_size}
+eco: null

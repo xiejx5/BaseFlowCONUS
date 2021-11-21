@@ -1,0 +1,5 @@
+_target_: src.datasplits.train_test.TrainTestSplit
+
+defaults:
+  - public_args
+  - _self_

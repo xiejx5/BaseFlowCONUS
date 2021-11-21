@@ -1,0 +1,7 @@
+_target_: MISSING
+# Number of dynamic features, which are those passed to the LSTM at each time step
+input_size_dyn: 8
+hidden_size: 256
+output_size: 1
+num_layers: 1
+drop_prob: 0.4

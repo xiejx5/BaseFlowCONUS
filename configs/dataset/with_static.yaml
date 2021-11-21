@@ -1,0 +1,9 @@
+_target_: src.datasets.with_static.WithStatic
+
+defaults:
+  - dynamic
+  - _self_
+
+# override
+S_dir: ${constant.csv.sta}
+input_size_sta: ${model.input_size_sta}

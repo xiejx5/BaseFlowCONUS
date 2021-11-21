@@ -1,0 +1,43 @@
+# @package constant
+
+# directories and files
+data_dir: ${data_dir}
+
+raw:
+  dyn: ${data_dir}/raw/dynamic
+  sta: ${data_dir}/raw/static
+
+tif:
+  dyn: ${data_dir}/tif/dynamic
+  sta: ${data_dir}/tif/static
+
+csv:
+  dyn: ${data_dir}/csv/dynamic
+  sta: ${data_dir}/csv/static_features.csv
+  flow:
+    daily: ${data_dir}/csv/baseflow_daily
+    monthly: ${data_dir}/csv/baseflow_monthly
+
+shp:
+  usa: ${data_dir}/shp/usa/usa_wgs84.shp
+  basins: ${data_dir}/shp/basins/1653-na.shp
+  perm: ${data_dir}/shp/perm/permeability.shp
+  eco:
+    CPL: ${data_dir}/shp/ecoregions/CPL_wgs84.shp
+    NPL: ${data_dir}/shp/ecoregions/NPL_wgs84.shp
+    SPL: ${data_dir}/shp/ecoregions/SPL_wgs84.shp
+    TPL: ${data_dir}/shp/ecoregions/TPL_wgs84.shp
+    UMW: ${data_dir}/shp/ecoregions/UMW_wgs84.shp
+    XER: ${data_dir}/shp/ecoregions/XER_wgs84.shp
+    WMT: ${data_dir}/shp/ecoregions/WMT_wgs84.shp
+    NAP: ${data_dir}/shp/ecoregions/NAP_wgs84.shp
+    SAP: ${data_dir}/shp/ecoregions/SAP_wgs84.shp
+
+gages: ${data_dir}/Gages.xlsx
+gages_origin: ${data_dir}/Gages_Origin.xlsx
+
+# Google Earth Engine parameters
+gee:
+  username: xiejx5
+  basins: 1653-na
+  usa: CONUS

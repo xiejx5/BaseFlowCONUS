@@ -1,0 +1,17 @@
+# specify here default training configuration
+metrics:
+  - _target_: src.trainer.metric.NSE
+  - _target_: src.trainer.metric.MeanNSE
+  - _target_: src.trainer.metric.MedianNSE
+
+lr_scheduler:
+  _target_: torch.optim.lr_scheduler.MultiStepLR
+  milestones: [700]
+  gamma: 0.5
+
+epochs: 800
+save_topk: 3
+logging_step: 1000
+tensorboard: true
+monitor: min loss/valid
+early_stop:

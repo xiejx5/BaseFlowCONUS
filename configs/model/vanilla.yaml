@@ -1,0 +1,5 @@
+_target_: src.models.vanilla.VanillaLSTM
+
+defaults:
+  - public_arch
+  - _self_
