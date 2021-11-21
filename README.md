@@ -7,7 +7,7 @@
 
 <div align="center">
 
-https://user-images.githubusercontent.com/29588684/142756866-7e22814d-2e78-4fad-8035-86eee529bb10.gif
+![](https://user-images.githubusercontent.com/29588684/142756866-7e22814d-2e78-4fad-8035-86eee529bb10.gif)
 
 </div>
 <br>
