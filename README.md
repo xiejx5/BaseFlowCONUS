@@ -25,7 +25,6 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
 <br>
 
 
-<a name="introcution"></a>
 ## 📌&nbsp;&nbsp;Introduction
 To fill the gaps in time-varying baseflow datasets, we introduced a machine learning approach called the long short-term memory (LSTM) network to develop a monthly baseflow dataset.
 
@@ -35,7 +34,6 @@ Based on Front LSTM, the monthly baseflow dataset with 0.25° spatial resolution
 <br>
 <br>
 
-<a name="structure"></a>
 ## ⚡&nbsp;&nbsp;Project Structure
 ```yaml
 baseflow/
@@ -78,7 +76,6 @@ baseflow/
 ```
 <br>
 
-<a name="usage"></a>
 ## ℹ️&nbsp;&nbsp;Usage
 
 ### Data Preparation
@@ -111,5 +108,4 @@ simulate(checkpoint)
 ```
 <br>
 
-<a name="license"></a>
 ## 🚀&nbsp;&nbsp;License
