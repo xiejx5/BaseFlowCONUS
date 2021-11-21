@@ -17,7 +17,6 @@ csv:
   flow:
     daily: ${data_dir}/csv/baseflow_daily
     monthly: ${data_dir}/csv/baseflow_monthly
-
 shp:
   usa: ${data_dir}/shp/usa/usa_wgs84.shp
   basins: ${data_dir}/shp/basins/1653-na.shp

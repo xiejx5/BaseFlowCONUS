@@ -1,0 +1,9 @@
+time_steps: 12
+# Number of dynamic features, which are those passed to the LSTM at each time step
+input_size_dyn: 8
+# Number of static features
+input_size_sta: 16
+hidden_size: 128
+output_size: 1
+num_layers: 1
+dropout: 0.30
