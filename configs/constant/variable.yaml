@@ -10,35 +10,9 @@ end:
   year: 2020
   month: 12
 
-# dynamic inputs
-dyn:
-  - total_precipitation
-  - snowfall
-  - potential_evapotranspiration
-  - 2m_temperature
-  - 2m_dewpoint_temperature
-  - 10m_wind_speed
-  - surface_net_radiation
-  - leaf_area_index
-
-# static feature
-sta:
-  - P
-  - PET
-  - AI
-  - TA
-  - SNOW
-  - ELEV
-  - SLO
-  - NDVI
-  - FOREST
-  - WATER
-  - PERM
-  - BD
-  - FRAG
-  - SAND
-  - SILT
-  - CLAY
-
 # month used for comparison, here April used
 month_compared: 4
+
+# gdal option
+gdal:
+  nodata: -9.223372e+18

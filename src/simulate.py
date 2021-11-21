@@ -112,7 +112,7 @@ def predict_tif(cfg, y_pred, norm, ds_eg, grids):
 
     flow_ds = gdal.GetDriverByName('GTiff').Create(
         flow_file, ds_eg.RasterXSize, ds_eg.RasterYSize,
-        num_months, gdal.GDT_Float64, cfg.constant.gdal.creation)
+        num_months, gdal.GDT_Float64, gs.CREATION)
     flow_ds.SetGeoTransform(ds_eg.GetGeoTransform())
     flow_ds.SetProjection(ds_eg.GetProjectionRef())
 

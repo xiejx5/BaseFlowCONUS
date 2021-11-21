@@ -1,6 +1,0 @@
-_target_: source.dataloaders.data_loaders.get_data_loaders
-data_dir: ${data_dir} # data_dir is specified in config.yaml
-batch_size: 64
-shuffle: true
-validation_split: 0.2
-num_workers: 10
