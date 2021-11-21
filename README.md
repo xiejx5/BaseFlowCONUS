@@ -13,7 +13,6 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
 
 </div>
 <br>
-
 - [Introduction](#introduction)
 - [Project Structure](#project-structure)
 - [Usage](#usage)
@@ -23,7 +22,6 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
     - [Baseflow Simulation](#baseflow-simulation)
 - [License](#license)
 <br>
-
 
 ## 📌&nbsp;&nbsp;Introduction
 To fill the gaps in time-varying baseflow datasets, we introduced a machine learning approach called the long short-term memory (LSTM) network to develop a monthly baseflow dataset.
@@ -80,8 +78,8 @@ baseflow/
 ## ℹ️&nbsp;&nbsp;Usage
 
 ### Data Preparation
-- First, download watershed.zip from the [release page](https://github.com/xiejx5/watershed_delineation/releases)
-- Next, unzip and open watershed.exe, clip start to execute an example
+First, download watershed.zip from the [release page](https://github.com/xiejx5/watershed_delineation/releases)
+Next, unzip and open watershed.exe, clip start to execute an example
 <br>
 
 ### Hyperparameter Tuning
