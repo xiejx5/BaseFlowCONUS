@@ -14,7 +14,7 @@
 
 - [Introduction](#introduction)
 - [Folder Structure](#project-structure)
-- [Guide](#guide)
+- [Usage](#usage)
     - [Prepare Data](#prepare-data)
     - [Hyperparameter Tuning](#hyperparameter-tuning)
     - [Train and Evaluate](#train-and-evaluate)
@@ -75,7 +75,7 @@ We estimated the 0.25° monthly gridded baseflow across the contiguous US from 1
 ```
 <br>
 
-## ℹ️&nbsp;&nbsp;Guide
+## ℹ️&nbsp;&nbsp;Usage
 
 ### Prepare Data
 <br>
