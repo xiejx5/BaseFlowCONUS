@@ -25,7 +25,7 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
 <br>
 
 ## 📌&nbsp;&nbsp;Introduction
-To fill the gaps in time-varying baseflow datasets, we introduced a machine learning approach called the long short-term memory (LSTM) network to develop a monthly baseflow dataset.
+To fill the gaps in time-series baseflow datasets, we introduced a machine learning approach called the long short-term memory (LSTM) network to develop a monthly baseflow dataset.
 
 To better train across basins, we compared the standard LSTM with four variant architectures using additional static properties as input. Results show that three variant architectures (Joint, Front, and EA-LSTM) perform better than the standard LSTM, with median Kling-Gupta efficiency across basins greater than 0.85.
 
