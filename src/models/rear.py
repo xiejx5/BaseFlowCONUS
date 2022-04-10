@@ -3,7 +3,8 @@ import torch.nn as nn
 
 
 class RearLSTM(nn.Module):
-    def __init__(self, input_size_sta, input_size_dyn, hidden_size, output_size, num_layers, drop_prob=0.5):
+    def __init__(self, input_size_sta, input_size_dyn, rear_size,
+                 hidden_size, output_size, num_layers, drop_prob=0.5):
         super().__init__()
 
         self.hidden_size = hidden_size
@@ -15,8 +16,8 @@ class RearLSTM(nn.Module):
             self.lstm = nn.LSTM(input_size_dyn, hidden_size, num_layers,
                                 dropout=drop_prob, batch_first=True)
         self.dropout = nn.Dropout(drop_prob)
-        self.fc_sta = nn.Linear(input_size_sta, input_size_sta)
-        self.fc = nn.Linear(hidden_size + input_size_sta, output_size)
+        self.fc_sta = nn.Linear(input_size_sta, rear_size)
+        self.fc = nn.Linear(hidden_size + rear_size, output_size)
         self.act = nn.ReLU()
 
     def forward(self, data):

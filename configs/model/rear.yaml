@@ -6,3 +6,4 @@ defaults:
 
 # Number of static features
 input_size_sta: 16
+rear_size: 16

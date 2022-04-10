@@ -4,8 +4,8 @@
 # python run.py -m tuner=optuna hydra.sweeper.n_trials=30
 
 defaults:
-    - override /model: vanilla
-    - override /dataset: dynamic
+    - override /model: rear
+    - override /dataset: with_static
     - override /datasplit: cross_val
     - override /hydra/sweeper: optuna
     # The value of sampler must be one of tpe, random, cmaes, nsgaii and motpe
@@ -35,7 +35,7 @@ hydra:
         direction: maximize
 
         # number of experiments that will be executed
-        n_trials: 100
+        n_trials: 200
 
         # choose Optuna hyperparameter sampler
         # learn more here: https://optuna.readthedocs.io/en/stable/reference/samplers.html
@@ -53,6 +53,9 @@ hydra:
             model.hidden_size:
                 type: categorical
                 choices: [64, 128, 256, 512]
+            model.rear_size:
+                type: categorical
+                choices: [16, 32, 64, 128, 256, 512]
             model.drop_prob:
                 type: categorical
                 choices: [0, 0.25, 0.4, 0.5]
