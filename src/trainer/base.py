@@ -1,13 +1,12 @@
-import logging
 import torch
-from abc import abstractmethod, ABCMeta
+import logging
+from numpy import inf
 from pathlib import Path
 from shutil import copyfile
-from numpy import inf
-from hydra.utils import to_absolute_path, get_original_cwd
-
 from src.utils import write_conf
 from src.utils.logger import EpochMetrics
+from abc import abstractmethod, ABCMeta
+from hydra.utils import to_absolute_path, get_original_cwd
 
 
 logger = logging.getLogger('base-trainer')

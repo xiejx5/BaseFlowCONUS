@@ -47,16 +47,19 @@ class Trainer(BaseTrainer):
         """
         self.model.train()
         self.train_metrics.reset()
-        for batch_idx, (data, target, basin) in enumerate(self.data_loader):
+        for batch_idx, (input, target, label) in enumerate(self.data_loader):
             target = target.to(self.device)
-            if isinstance(data, torch.Tensor):
-                data = data.to(self.device)
+            if isinstance(input, torch.Tensor):
+                input = tuple([input.to(self.device)])
             else:
-                data = tuple(i.to(self.device) for i in data)
+                input = tuple(i.to(self.device) for i in input)
 
+            # Forward pass
+            output = self.model(*input)
+            loss = self.criterion(output, target, label)
+
+            # Backward and optimize
             self.optimizer.zero_grad()
-            output = self.model(data)
-            loss = self.criterion(output, target, basin)
             loss.backward()
             self.optimizer.step()
 

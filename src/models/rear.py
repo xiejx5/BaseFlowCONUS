@@ -20,9 +20,7 @@ class RearLSTM(nn.Module):
         self.fc = nn.Linear(hidden_size + rear_size, output_size)
         self.act = nn.ReLU()
 
-    def forward(self, data):
-        x_s, x_d = data
-
+    def forward(self, x_s, x_d):
         # Forward propagate LSTM
         # out: tensor of shape (batch_size, seq_length, hidden_size)
         out, _ = self.lstm(x_d)

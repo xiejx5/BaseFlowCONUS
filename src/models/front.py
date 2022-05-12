@@ -19,8 +19,7 @@ class FrontLSTM(nn.Module):
         self.fc = nn.Linear(hidden_size, output_size)
         self.act = nn.ReLU()
 
-    def forward(self, data):
-        x_s, x_d = data
+    def forward(self, x_s, x_d):
         # Set initial hidden and cell states
         h0 = self.act(self.fc_h(x_s))
         h0 = h0.reshape(h0.shape[0], self.num_layers, -1).transpose(0, 1).contiguous()

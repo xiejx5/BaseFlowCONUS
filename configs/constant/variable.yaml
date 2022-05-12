@@ -16,3 +16,31 @@ month_compared: 4
 # gdal option
 gdal:
   nodata: -9.223372e+18
+
+dyn_order:
+  - total_precipitation
+  - 2m_temperature
+  - 2m_dewpoint_temperature
+  - 10m_wind_speed
+  - surface_net_radiation
+  - potential_evapotranspiration
+  - snowfall
+  - leaf_area_index
+
+sta_order:
+  - total_precipitation
+  - potential_evapotranspiration
+  - aridity_index
+  - snow_percent
+  - 2m_temperature
+  - dem
+  - slope
+  - treecover2000
+  - water_occurrence
+  - ndvi
+  - permeability
+  - bdod
+  - cfvo
+  - sand
+  - silt
+  - clay

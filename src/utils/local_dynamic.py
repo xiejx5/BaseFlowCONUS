@@ -38,9 +38,11 @@ def daily_to_monthly_flow(cfg):
         year = np.repeat(year, 12)
         month = np.arange(1, 13)
         month = np.tile(month, int(year.shape[0] / 12))
-        start = np.searchsorted((year == cfg.beg.year + (cfg.beg.month + seq_length - 2) // 12) &
-                                (month >= (cfg.beg.month + seq_length - 2) % 12 + 1) |
-                                (year > cfg.beg.year + (cfg.beg.month + seq_length - 2) // 12), True)
+        first_year = cfg.beg.year + (cfg.beg.month + seq_length - 2) // 12
+        first_month = (cfg.beg.month + seq_length - 2) % 12 + 1
+        start = np.searchsorted((year == first_year) &
+                                (month >= first_month) |
+                                (year > first_year), True)
         end = np.searchsorted((year == cfg.end.year) & (month > cfg.end.month) |
                               (year > cfg.end.year), True)
         year, month = year[start:end], month[start:end]

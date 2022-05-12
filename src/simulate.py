@@ -4,27 +4,13 @@ import pandas as pd
 import geospace as gs
 from osgeo import gdal
 from pathlib import Path
-from omegaconf import OmegaConf
 from hydra.utils import instantiate
+from src.evaluate import instantiate_model
 
 
 def simulate(checkpoint):
-    pth = torch.load(checkpoint)
-    pth['config']['work_dir'] = '.'
-    cfg = OmegaConf.create(pth['config'])
-
-    # restore network architecture
-    model = instantiate(cfg.model)
-
-    # load trained weights
-    if cfg['n_gpu'] > 1:
-        model = torch.nn.DataParallel(model)
-    model.load_state_dict(pth['state_dict'])
-
-    # prepare model for testing
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = model.to(device)
-    model.eval()
+    model, cfg = instantiate_model(checkpoint)
+    device = next(model.parameters()).device
 
     # simulate
     SIMU_BATCH = 10000
@@ -33,10 +19,10 @@ def simulate(checkpoint):
         S, X, norm, ds_eg, grids = load_tif_data(cfg)
         for input in zip(torch.split(S, SIMU_BATCH), torch.split(X, SIMU_BATCH)):
             if isinstance(input, torch.Tensor):
-                input = input.to(device)
+                input = tuple([input.to(device)])
             else:
                 input = tuple(i.to(device) for i in input)
-            outputs.append(model(input))
+            outputs.append(model(*input))
         y_pred = torch.cat(outputs).cpu().numpy().squeeze()
     return predict_tif(cfg, y_pred, norm, ds_eg, grids)
 

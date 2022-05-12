@@ -1,11 +1,14 @@
+import pandas as pd
 import geospace as gs
 from pathlib import Path
 from src.prepare import prepare
 from src.simulate import simulate
+from src.evaluate import importance
 from src.evaluate import basin_evaluate
-from hydra import compose, initialize_config_dir
 from hydra.core.global_hydra import GlobalHydra
+from hydra import compose, initialize_config_dir
 from src.utils import run, save_hparams, save_models
+
 
 if __name__ == '__main__':
     # initial hydra config in jupyter notebook
@@ -64,3 +67,15 @@ if __name__ == '__main__':
             checkpoint = f'saved/train/{model}/{eco}/models/model_latest.pth'
             simulate_tifs.append(simulate(checkpoint))
         gs.mosaic(simulate_tifs, gridded_baseflow)
+
+    # defining and applying integrated gradients on Models
+    model = 'front'
+    saved_path = Path(f'saved/train/{model}/importance_{model}.csv')
+    if not saved_path.exists():
+        dfs = [importance(f'saved/train/{model}/{eco}/models/model_latest.pth')
+               for eco in ecoregions]
+        order = ['dyn_' + dyn for dyn in cfg.constant.dyn_order]
+        if model != 'vanilla':
+            order += list(cfg.constant.sta_order)
+        df = pd.concat(dfs, axis=0).set_index(pd.Index(ecoregions))[order].T
+        df.to_csv(saved_path)

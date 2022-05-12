@@ -1,8 +1,8 @@
 import hydra
 import logging
-from src.trainer import Trainer
 from hydra.utils import instantiate
 from src.utils import consistent_split
+from src.trainer.trainer import Trainer
 
 
 @hydra.main(config_path='configs', config_name='config')

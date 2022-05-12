@@ -14,21 +14,24 @@ class Dynamic(Dataset):
         if eco is not None:
             gages = gages[gages['ECO'] == eco].reset_index(drop=True)
         gages['num_months'] = -1
+        first_year = beg_year + (beg_month + seq_length - 2) // 12
+        first_month = (beg_month + seq_length - 2) % 12 + 1
         for i, basin in gages.iterrows():
             df = pd.read_csv(os.path.join(y_dir, basin['STAID'] + '.csv'))
-            flow_beg = np.searchsorted((df['Y'] == beg_year + (beg_month + seq_length - 2) // 12) &
-                                       (df['M'] >= (beg_month + seq_length - 2) % 12 + 1) |
-                                       (df['Y'] > beg_year + (beg_month + seq_length - 2) // 12), True)
+            flow_beg = np.searchsorted((df['Y'] == first_year) &
+                                       (df['M'] >= first_month) |
+                                       (df['Y'] > first_year), True)
             if flow_beg < df.shape[0]:
                 flow = pd.concat([flow, df.iloc[flow_beg:]], axis=0, ignore_index=True)
                 gages.loc[i, 'num_months'] = df.iloc[flow_beg:].shape[0]
 
         # assign time deltas and basin indices to the baseflow dataframe
         flow['delta'] = (flow['Y'] - beg_year) * 12 + flow['M'] - beg_month
-        gages = gages[gages['num_months'] != -1]
+        gages = gages[gages['num_months'] != -1].reset_index(drop=True)
         gages['t'] = np.cumsum(gages['num_months'])
         gages['s'] = gages['t'].shift(1, fill_value=0)
-        flow['basin'] = np.repeat(np.arange(0, gages.shape[0], dtype=int), gages['t'] - gages['s'])
+        flow['basin'] = np.repeat(np.arange(0, gages.shape[0], dtype=int),
+                                  gages['t'] - gages['s'])
 
         # construct X
         X = np.zeros((flow.shape[0], seq_length, input_size_dyn))

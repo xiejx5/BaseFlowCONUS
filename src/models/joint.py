@@ -18,10 +18,9 @@ class JointLSTM(nn.Module):
         self.fc = nn.Linear(hidden_size, output_size)
         self.act = nn.ReLU()
 
-    def forward(self, data):
-        x_s, x_d = data
+    def forward(self, x_s, x_d):
+        # concatenate static and dynamic inputs
         x = torch.cat((x_d, x_s.repeat_interleave(x_d.shape[1], dim=0).reshape(*x_d.shape[:2], -1)), dim=-1)
-        # Set initial hidden and cell states
 
         # Forward propagate LSTM
         # out: tensor of shape (batch_size, seq_length, hidden_size)
