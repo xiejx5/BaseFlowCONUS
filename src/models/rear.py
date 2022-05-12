@@ -3,8 +3,8 @@ import torch.nn as nn
 
 
 class RearLSTM(nn.Module):
-    def __init__(self, input_size_sta, input_size_dyn, rear_size,
-                 hidden_size, output_size, num_layers, drop_prob=0.5):
+    def __init__(self, input_size_sta, input_size_dyn, hidden_size,
+                 output_size, num_layers, rear_size=16, drop_prob=0.5):
         super().__init__()
 
         self.hidden_size = hidden_size

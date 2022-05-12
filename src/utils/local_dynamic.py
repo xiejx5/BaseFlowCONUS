@@ -22,6 +22,7 @@ def daily_to_monthly_flow(cfg):
         return
 
     gages = pd.read_excel(cfg.gages_origin, dtype={'STAID': str})
+    seq_length = 24
     drop_index = []
 
     for index, g in gages.iterrows():
@@ -37,13 +38,12 @@ def daily_to_monthly_flow(cfg):
         year = np.repeat(year, 12)
         month = np.arange(1, 13)
         month = np.tile(month, int(year.shape[0] / 12))
-        first_year_delete = np.where(
-            (month < cfg.beg.month) & (year == cfg.beg.year))[0]
-        final_year_delete = np.where(
-            (month > cfg.end.month) & (year == cfg.end.year))[0]
-        delete_year = np.r_[first_year_delete, final_year_delete]
-        year = np.delete(year, delete_year)
-        month = np.delete(month, delete_year)
+        start = np.searchsorted((year == cfg.beg.year + (cfg.beg.month + seq_length - 2) // 12) &
+                                (month >= (cfg.beg.month + seq_length - 2) % 12 + 1) |
+                                (year > cfg.beg.year + (cfg.beg.month + seq_length - 2) // 12), True)
+        end = np.searchsorted((year == cfg.end.year) & (month > cfg.end.month) |
+                              (year > cfg.end.year), True)
+        year, month = year[start:end], month[start:end]
         flow = np.full(month.shape, np.nan)
         for i, (y, m) in enumerate(zip(year, month)):
             select = (df['Y'] == y) & (df['M'] == m)

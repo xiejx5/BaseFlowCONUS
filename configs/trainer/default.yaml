@@ -12,6 +12,6 @@ lr_scheduler:
 epochs: 800
 save_topk: 3
 logging_step: 1000
-tensorboard: true
+tensorboard: false
 monitor: min loss/valid
 early_stop:

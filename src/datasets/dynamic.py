@@ -18,7 +18,7 @@ class Dynamic(Dataset):
             df = pd.read_csv(os.path.join(y_dir, basin['STAID'] + '.csv'))
             flow_beg = np.searchsorted((df['Y'] == beg_year + (beg_month + seq_length - 2) // 12) &
                                        (df['M'] >= (beg_month + seq_length - 2) % 12 + 1) |
-                                       (df['Y'] >= beg_year + (beg_month + seq_length - 2) // 12 + 1), True)
+                                       (df['Y'] > beg_year + (beg_month + seq_length - 2) // 12), True)
             if flow_beg < df.shape[0]:
                 flow = pd.concat([flow, df.iloc[flow_beg:]], axis=0, ignore_index=True)
                 gages.loc[i, 'num_months'] = df.iloc[flow_beg:].shape[0]

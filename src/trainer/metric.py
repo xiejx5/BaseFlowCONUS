@@ -103,7 +103,7 @@ def seqKGE(y_pred, y_true, basin):
     unique = torch.unique(basin, sorted=True)
     KGEs = []
     for u in unique:
-        KGEs.append(singleKGE(y_pred[basin == u], y_true[basin == u])[0])
+        KGEs.append(singleKGE(y_pred[basin == u], y_true[basin == u]))
     return torch.hstack(KGEs)
 
 

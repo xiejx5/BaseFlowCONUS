@@ -83,7 +83,7 @@ def basin_evaluate(checkpoint, save_csv=True):
 
     df = pd.DataFrame()
     df['STAID'] = dataset.gages['STAID']
-    df['NSE'] = seqKGE(y_pred, y_true, basin).cpu().numpy()
+    df[['KGE', 'r', 'alpha', 'beta']] = seqKGE(y_pred, y_true, basin).cpu().numpy().T
     if save_csv:
         df.to_csv(Path(checkpoint).parents[1] / 'basin-results.csv', index=None)
     return df

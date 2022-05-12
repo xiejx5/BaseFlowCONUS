@@ -24,7 +24,6 @@ optimizer:
   lr: 0.0001
 model:
   hidden_size: 256
-  rear_size: 16
   drop_prob: 0.4
 dataset:
   seq_length: 18
