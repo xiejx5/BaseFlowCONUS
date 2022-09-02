@@ -9,7 +9,6 @@ def prepare(cfg):
     # 0. download data into local disk
     down_local.download_local_dynamic(cfg)
     down_local.download_local_static_vegetation_cover(cfg)
-    down_local.download_local_static_vegetation_cover(cfg)
     down_local.global_surface_water(cfg)
 
     # 1. preprocess dynamic data in local disk

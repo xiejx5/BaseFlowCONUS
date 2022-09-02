@@ -24,7 +24,7 @@ provides an opportunity to analyze large-scale baseflow trends under global chan
 - [License](#license)
 <br>
 
-## 📌&nbsp;&nbsp;Introduction
+## 🚀&nbsp;&nbsp;Introduction
 To fill the gaps in time-series baseflow datasets, we introduced a machine learning approach called long short-term memory (LSTM) networks to develop a monthly baseflow dataset.
 
 To better train across basins, we compared the standard LSTM with four variant architectures using additional static properties as input. Results show that three variant architectures (Joint, Front, and EA-LSTM) perform better than the standard LSTM, with median Kling-Gupta efficiency across basins greater than 0.85.
@@ -112,4 +112,7 @@ simulate(checkpoint)
 ```
 <br>
 
-## 🚀&nbsp;&nbsp;License
+## 📌&nbsp;&nbsp;Publications
+
+### It is highly appreciated for citing the following paper:
+- Xie, J., Liu, X., Tian, W., Wang, K., Bai, P., & Liu, C. (2022). Estimating Gridded Monthly Baseflow From 1981 to 2020 for the Contiguous US Using Long Short-Term Memory (LSTM) Networks. Water Resources Research, 58(8), e2021WR031663. https://doi.org/10.1029/2021WR031663
