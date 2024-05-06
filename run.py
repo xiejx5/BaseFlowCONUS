@@ -5,7 +5,7 @@ from src.utils import consistent_split
 from src.trainer.trainer import Trainer
 
 
-@hydra.main(config_path='configs', config_name='config')
+@hydra.main(config_path='configs', config_name='config', version_base=None)
 def main(cfg):
     logger = logging.getLogger('trainer')
 

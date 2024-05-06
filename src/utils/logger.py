@@ -25,9 +25,9 @@ class BatchMetrics:
             key = key + self.postfix
         if self.writer is not None and isinstance(step, int):
             self.writer.add_scalar(key, value, step)
-        self._data.total[key] += value * n
-        self._data.counts[key] += n
-        self._data.average[key] = self._data.total[key] / self._data.counts[key]
+        self._data.loc[key, 'total'] += value * n
+        self._data.loc[key, 'counts'] += n
+        self._data.loc[key, 'average'] = self._data.loc[key, 'total'] / self._data.loc[key, 'counts']
 
     def avg(self, key):
         if self.postfix:

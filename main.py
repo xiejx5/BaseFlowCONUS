@@ -14,7 +14,7 @@ if __name__ == '__main__':
     # initial hydra config in jupyter notebook
     config_file = Path('configs/config.yaml')
     if not GlobalHydra.instance().is_initialized():
-        initialize_config_dir(config_dir=str(config_file.parent.absolute()))
+        initialize_config_dir(config_dir=str(config_file.parent.absolute()), version_base=None)
         cfg = compose(config_name=config_file.name, overrides=["work_dir=."])
 
     # preapare data first if data is unavailable
